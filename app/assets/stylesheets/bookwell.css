@@ -78,8 +78,11 @@ h1 {
   margin: 0 0 1.5rem;
 }
 
-.crumb a,
-.actions a {
+.crumb a {
+  color: var(--accent);
+}
+
+.actions a:not(.button) {
   color: var(--accent);
 }
 
