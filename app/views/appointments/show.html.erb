@@ -1,0 +1,43 @@
+<% content_for :title, "Appointment ##{@appointment.id} — Bookwell" %>
+
+<p class="crumb"><%= link_to "← Appointments", appointments_path %></p>
+
+<h1>Appointment #<%= @appointment.id %></h1>
+
+<dl class="detail">
+  <dt>When</dt>
+  <dd><%= @appointment.display_time %></dd>
+
+  <dt>Range</dt>
+  <dd><%= @appointment.time_range %></dd>
+
+  <dt>Proximity</dt>
+  <dd><%= @appointment.relative_time_phrase %> (<%= @appointment.proximity_label %>)</dd>
+
+  <dt>Practitioner</dt>
+  <dd><%= @appointment.practitioner.name %></dd>
+
+  <dt>Customer</dt>
+  <dd><%= @appointment.customer.name %></dd>
+
+  <dt>Status</dt>
+  <dd><%= @appointment.status.titleize %></dd>
+
+  <% if @appointment.payment %>
+    <dt>Paid</dt>
+    <dd><%= number_to_currency(@appointment.amount_paid) %></dd>
+
+    <dt>Deposit</dt>
+    <dd><%= number_to_currency(@appointment.deposit_paid) %></dd>
+
+    <dt>Balance due</dt>
+    <dd><%= number_to_currency(@appointment.balance_due) %></dd>
+
+    <dt>Refund if cancelled</dt>
+    <dd><%= number_to_currency(@appointment.refund_amount) %></dd>
+  <% end %>
+</dl>
+
+<p class="actions">
+  <%= link_to "Update status", edit_appointment_path(@appointment), class: "button" %>
+</p>

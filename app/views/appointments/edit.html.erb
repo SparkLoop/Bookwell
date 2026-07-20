@@ -1,0 +1,21 @@
+<% content_for :title, "Update status — Bookwell" %>
+
+<p class="crumb"><%= link_to "← Appointment", @appointment %></p>
+
+<h1>Update status</h1>
+<p class="lede">
+  <%= @appointment.display_time %> ·
+  <%= @appointment.practitioner.name %> with <%= @appointment.customer.name %>
+</p>
+
+<%= form_with model: @appointment, class: "status-form" do |f| %>
+  <div class="field">
+    <%= f.label :status %>
+    <%= f.select :status, Appointment.statuses.keys.map { |s| [s.titleize, s] } %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Save status", class: "button" %>
+    <%= link_to "Cancel", @appointment %>
+  </div>
+<% end %>
