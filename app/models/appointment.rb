@@ -221,7 +221,7 @@ class Appointment < ApplicationRecord
   end
 
   def self.needs_follow_up
-    where(status: [:completed, :no_show])
+    where(status: [ :completed, :no_show ])
       .where("starts_at >= ?", 7.days.ago)
       .order(starts_at: :desc)
   end
