@@ -1,0 +1,27 @@
+<% content_for :title, "Appointments — Bookwell" %>
+
+<h1>Appointments</h1>
+<p class="lede">All bookings ordered by start time.</p>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>When</th>
+      <th>Practitioner</th>
+      <th>Customer</th>
+      <th>Status</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @appointments.each do |appointment| %>
+      <tr>
+        <td><%= appointment.display_time %></td>
+        <td><%= appointment.practitioner.name %></td>
+        <td><%= appointment.customer.name %></td>
+        <td><%= appointment.status.titleize %></td>
+        <td><%= link_to "View", appointment %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

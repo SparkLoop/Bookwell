@@ -1,0 +1,9 @@
+<p>Hi <%= @customer.name %>,</p>
+
+<p>
+  Your appointment with <%= @practitioner.name %> on
+  <%= @appointment.display_time %> is now
+  <strong><%= @appointment.status.humanize %></strong>.
+</p>
+
+<p>— Bookwell</p>
