@@ -9,11 +9,16 @@ class Appointment < ApplicationRecord
   validates :status, presence: true
 
   after_save :notify_status_change
+  after_create :send_confirmation_email
 
   def notify_status_change
     return unless saved_change_to_status?
 
     AppointmentMailer.status_changed(self).deliver_now
+  end
+
+  def send_confirmation_email
+    AppointmentMailer.confirmation(self).deliver_now
   end
 
   def confirm!

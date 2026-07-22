@@ -4,6 +4,7 @@ Customer.delete_all
 Practitioner.delete_all
 
 Appointment.skip_callback(:save, :after, :notify_status_change)
+Appointment.skip_callback(:create, :after, :send_confirmation_email)
 
 begin
   practitioners = [
@@ -64,4 +65,5 @@ begin
   puts "Seeded #{practitioners.size} practitioners, #{customers.size} customers, #{appointment_count} appointments."
 ensure
   Appointment.set_callback(:save, :after, :notify_status_change)
+  Appointment.set_callback(:create, :after, :send_confirmation_email)
 end
