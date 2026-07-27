@@ -1,5 +1,8 @@
-Hi <%= @customer.name %>,
+<%= t(".greeting", name: @customer.name) %>
 
-Your appointment with <%= @practitioner.name %> on <%= @appointment.display_time %> is confirmed.
+<%= t(".body", practitioner: @practitioner.name, date: @appointment.display_time) %>
 
-— Bookwell
+<%= t(".view_appointment_plain") %>
+<%= customer_appointment_url(@appointment.slug) %>
+
+<%= t(".signature") %>

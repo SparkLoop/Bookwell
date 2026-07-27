@@ -7,9 +7,31 @@ class AppointmentMailer < ApplicationMailer
     @practitioner = appointment.practitioner
 
     mail(
-      to: @customer.email,
-      cc: @practitioner.email,
-      subject: "Appointment status updated to #{appointment.status.humanize}"
+      to:      @customer.email,
+      cc:      @practitioner.email,
+      subject: t(".subject", status: appointment.status.humanize)
+    )
+  end
+
+  def cancellation_confirmation(appointment)
+    @appointment = appointment
+    @customer    = appointment.customer
+    @practitioner = appointment.practitioner
+
+    mail(
+      to:      @customer.email,
+      subject: t(".subject", date: appointment.display_time)
+    )
+  end
+
+  def practitioner_cancellation_notification(appointment)
+    @appointment  = appointment
+    @customer     = appointment.customer
+    @practitioner = appointment.practitioner
+
+    mail(
+      to:      @practitioner.email,
+      subject: t(".subject", customer: @customer.name, date: appointment.display_time)
     )
   end
 
@@ -19,9 +41,9 @@ class AppointmentMailer < ApplicationMailer
     @practitioner = appointment.practitioner
 
     mail(
-      to: @customer.email,
-      cc: @practitioner.email,
-      subject: "Appointment confirmation"
+      to:      @customer.email,
+      cc:      @practitioner.email,
+      subject: t(".subject")
     )
   end
 end

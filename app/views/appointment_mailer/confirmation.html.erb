@@ -1,8 +1,7 @@
-<p>Hi <%= @customer.name %>,</p>
+<p><%= t(".greeting", name: @customer.name) %></p>
 
-<p>
-  Your appointment with <%= @practitioner.name %> on
-  <%= @appointment.display_time %> is confirmed.
-</p>
+<p><%= t(".body", practitioner: @practitioner.name, date: @appointment.display_time) %></p>
 
-<p>— Bookwell</p>
+<p><%= link_to t(".view_appointment"), customer_appointment_url(@appointment.slug) %></p>
+
+<p><%= t(".signature") %></p>

@@ -8,6 +8,9 @@
   --accent-ink: #f3fffb;
   --flash: #e4f3ee;
   --header: #f7fafb;
+  --danger: #b91c1c;
+  --danger-hover: #991b1b;
+  --danger-ink: #ffffff;
 }
 
 * {
@@ -144,16 +147,139 @@ h1 {
 }
 
 .button,
+button.button,
 input[type="submit"].button {
   display: inline-block;
   background: var(--accent);
   color: var(--accent-ink);
   border: none;
-  padding: 0.55rem 1rem;
+  padding: 0.6rem 1.1rem;
   text-decoration: none;
   font: inherit;
+  font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
+  border-radius: 4px;
+  letter-spacing: 0.01em;
+}
+
+.button--danger,
+button.button--danger {
+  background: var(--danger);
+  color: var(--danger-ink);
+}
+
+.button--danger:hover,
+button.button--danger:hover {
+  background: var(--danger-hover);
+}
+
+.button--ghost-danger,
+button.button--ghost-danger {
+  background: transparent;
+  color: var(--danger);
+  border: 1px solid var(--danger);
+  padding: 0.5rem 1rem;
+}
+
+.button--ghost-danger:hover,
+button.button--ghost-danger:hover {
+  background: var(--danger);
+  color: var(--danger-ink);
+}
+
+form.button_to {
+  display: inline;
+}
+
+/* Customer appointment view */
+
+.appt-heading {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0 0 1.25rem;
+}
+
+.appt-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  max-width: 30rem;
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.appt-hero {
+  background: var(--accent);
+  color: var(--accent-ink);
+  padding: 1.5rem 1.75rem;
+}
+
+.appt-date {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 0.2rem;
+}
+
+.appt-range {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.appt-detail {
+  display: grid;
+  grid-template-columns: 7.5rem 1fr;
+  margin: 0;
+  padding: 0;
+}
+
+.appt-detail dt,
+.appt-detail dd {
+  padding: 0.7rem 1.75rem;
+  margin: 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.95rem;
+}
+
+.appt-detail dt {
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.appt-detail dt:last-of-type,
+.appt-detail dd:last-of-type {
+  border-bottom: none;
+}
+
+.cancel-section {
+  max-width: 30rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--line);
+}
+
+.cancel-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  margin: 0 0 0.5rem;
+}
+
+.cancel-policy {
+  font-size: 0.875rem;
+  color: var(--muted);
+  line-height: 1.6;
+  margin: 0 0 1rem;
+}
+
+.appt-notice {
+  color: var(--muted);
+  font-size: 0.95rem;
+  max-width: 30rem;
 }
 
 .status-form .field {

@@ -3,22 +3,38 @@ class Appointment < ApplicationRecord
   belongs_to :customer
   has_one :payment, dependent: :destroy
 
-  enum :status, { confirmed: 0, completed: 1, no_show: 2 }
+  enum :status, { confirmed: 0, completed: 1, no_show: 2, cancelled: 3 }
 
   validates :starts_at, presence: true
   validates :status, presence: true
+
+  before_create :generate_slug
 
   after_save :notify_status_change
   after_create :send_confirmation_email
 
   def notify_status_change
     return unless saved_change_to_status?
+    return if previously_new_record?
 
-    AppointmentMailer.status_changed(self).deliver_now
+    if cancelled?
+      AppointmentMailer.cancellation_confirmation(self).deliver_now
+      AppointmentMailer.practitioner_cancellation_notification(self).deliver_now
+    else
+      AppointmentMailer.status_changed(self).deliver_now
+    end
   end
 
   def send_confirmation_email
     AppointmentMailer.confirmation(self).deliver_now
+  end
+
+  def cancel!
+    update!(status: :cancelled, cancelled_at: Time.current)
+  end
+
+  def cancellable?
+    confirmed? && upcoming?
   end
 
   def confirm!
@@ -46,11 +62,11 @@ class Appointment < ApplicationRecord
     date = starts_at.to_date
 
     if date == today
-      "Today"
+      I18n.t("appointment.day_label.today")
     elsif date == today + 1
-      "Tomorrow"
+      I18n.t("appointment.day_label.tomorrow")
     elsif date == today - 1
-      "Yesterday"
+      I18n.t("appointment.day_label.yesterday")
     else
       starts_at.strftime("%A")
     end
@@ -90,11 +106,11 @@ class Appointment < ApplicationRecord
   def refund_amount
     return 0.0 if payment.nil?
 
-    payment.amount_cents / 100.0 * 0.5
-  end
-
-  def refund_percentage
-    within_24h? ? 0.5 : 1.0
+    if within_48h?
+      amount_paid - deposit_paid
+    else
+      amount_paid
+    end
   end
 
   def deposit_forfeit
@@ -139,6 +155,10 @@ class Appointment < ApplicationRecord
     (starts_at - Time.current).abs <= 24.hours
   end
 
+  def within_48h?
+    (starts_at - Time.current).abs <= 48.hours
+  end
+
   def hours_until
     ((starts_at - Time.current) / 1.hour).round
   end
@@ -155,25 +175,25 @@ class Appointment < ApplicationRecord
     hours = hours_until
 
     if past?
-      "#{hours.abs} hours ago"
+      I18n.t("appointment.relative_time.past", hours: hours.abs)
     elsif hours < 1
-      "in less than an hour"
+      I18n.t("appointment.relative_time.less_than_hour")
     elsif hours == 1
-      "in about an hour"
+      I18n.t("appointment.relative_time.about_one_hour")
     else
-      "in #{hours} hours"
+      I18n.t("appointment.relative_time.hours_from_now", hours: hours)
     end
   end
 
   def proximity_label
     if starting_soon?
-      "Starting soon"
+      I18n.t("appointment.proximity_label.starting_soon")
     elsif soon?
-      "Within a day"
+      I18n.t("appointment.proximity_label.within_a_day")
     elsif upcoming?
-      "Upcoming"
+      I18n.t("appointment.proximity_label.upcoming")
     else
-      "Past"
+      I18n.t("appointment.proximity_label.past")
     end
   end
 
@@ -229,5 +249,11 @@ class Appointment < ApplicationRecord
     where(status: [ :completed, :no_show ])
       .where("starts_at >= ?", 7.days.ago)
       .order(starts_at: :desc)
+  end
+
+  private
+
+  def generate_slug
+    self.slug ||= SecureRandom.uuid
   end
 end
