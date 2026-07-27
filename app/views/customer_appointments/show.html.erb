@@ -1,0 +1,56 @@
+<% content_for :title, t(".title") %>
+
+<h1 class="appt-heading"><%= t(".heading") %></h1>
+
+<div class="appt-card">
+  <div class="appt-hero">
+    <div class="appt-date"><%= @appointment.display_time %></div>
+    <div class="appt-range"><%= @appointment.time_range %></div>
+  </div>
+
+  <dl class="appt-detail">
+    <dt><%= t(".with") %></dt>
+    <dd><%= @appointment.practitioner.name %></dd>
+
+    <dt><%= t(".status") %></dt>
+    <dd><%= t("appointment.status.#{@appointment.status}") %></dd>
+
+    <% if @appointment.payment %>
+      <dt><%= t(".amount_paid") %></dt>
+      <dd>$<%= "%.2f" % @appointment.amount_paid %></dd>
+    <% end %>
+  </dl>
+</div>
+
+<% if @appointment.cancellable? %>
+  <div class="cancel-section">
+    <p class="cancel-label"><%= t(".need_to_cancel") %></p>
+    <% deposit = "$#{"%.2f" % @appointment.deposit_paid}" %>
+    <% refund  = "$#{"%.2f" % @appointment.refund_amount}" %>
+    <p class="cancel-policy">
+      <% if @appointment.within_48h? %>
+        <%= t(".policy.within_48h_html", deposit: deposit, refund: refund) %>
+      <% else %>
+        <%= t(".policy.beyond_48h_html", refund: refund) %>
+      <% end %>
+    </p>
+    <%= button_to t(".cancel_button"),
+          cancel_customer_appointment_path(@appointment.slug),
+          method: :patch,
+          onclick: "return confirm('#{j t(".cancel_confirm")}')",
+          class: "button button--ghost-danger" %>
+  </div>
+
+<% elsif @appointment.cancelled? %>
+  <p class="appt-notice">
+    <% if @appointment.cancelled_at %>
+      <%= t(".cancelled_on", date: @appointment.cancelled_at.strftime("%b %-d, %Y at %-l:%M %p")) %>
+    <% else %>
+      <%= t(".cancelled") %>
+    <% end %>
+  </p>
+
+<% else %>
+  <p class="appt-notice"><%= t(".cannot_cancel") %></p>
+
+<% end %>

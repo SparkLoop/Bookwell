@@ -1,0 +1,15 @@
+<%= t(".greeting", name: @customer.name) %>
+
+<%= t(".body", practitioner: @practitioner.name, date: @appointment.display_time) %>
+
+<% if @appointment.payment %>
+<% deposit = "$#{"%.2f" % @appointment.deposit_paid}" %>
+<% refund  = "$#{"%.2f" % @appointment.refund_amount}" %>
+<% if @appointment.within_48h? %>
+<%= t(".refund.within_48h", deposit: deposit, refund: refund) %>
+<% else %>
+<%= t(".refund.beyond_48h", refund: refund) %>
+<% end %>
+<% end %>
+
+<%= t(".signature") %>

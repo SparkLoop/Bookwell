@@ -1,31 +1,80 @@
-# Files in the config/locales directory are used for internationalization and
-# are automatically loaded by Rails. If you want to use locales other than
-# English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t "hello"
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t("hello") %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# To learn more about the API, please read the Rails Internationalization guide
-# at https://guides.rubyonrails.org/i18n.html.
-#
-# Be aware that YAML interprets the following case-insensitive strings as
-# booleans: `true`, `false`, `on`, `off`, `yes`, `no`. Therefore, these strings
-# must be quoted to be interpreted as strings. For example:
-#
-#     en:
-#       "yes": yup
-#       enabled: "ON"
-
 en:
-  hello: "Hello world"
+  appointment:
+    proximity_label:
+      starting_soon: "Starting soon"
+      within_a_day: "Within a day"
+      upcoming: "Upcoming"
+      past: "Past"
+    relative_time:
+      past: "%{hours} hours ago"
+      less_than_hour: "in less than an hour"
+      about_one_hour: "in about an hour"
+      hours_from_now: "in %{hours} hours"
+    day_label:
+      today: "Today"
+      tomorrow: "Tomorrow"
+      yesterday: "Yesterday"
+    status:
+      confirmed: "Confirmed"
+      completed: "Completed"
+      no_show: "No Show"
+      cancelled: "Cancelled"
+
+  customer_appointments:
+    show:
+      title: "Your Appointment"
+      heading: "Your appointment"
+      with: "With"
+      status: "Status"
+      amount_paid: "Amount paid"
+      need_to_cancel: "Need to cancel?"
+      cancel_button: "Cancel this appointment"
+      cancel_confirm: "Are you sure you want to cancel this appointment?"
+      cancelled_on: "This appointment was cancelled on %{date}."
+      cancelled: "This appointment was cancelled."
+      cannot_cancel: "This appointment has already taken place and cannot be cancelled."
+      policy:
+        within_48h_html: "Because your appointment is within 48 hours, your deposit of <strong>%{deposit}</strong> will be forfeited and you will receive a refund of <strong>%{refund}</strong>."
+        beyond_48h_html: "You are more than 48 hours out, so you will receive a full refund of <strong>%{refund}</strong>."
+    cancel:
+      success: "Your appointment has been cancelled."
+      already_cancelled: "This appointment is already cancelled."
+      not_cancellable: "This appointment cannot be cancelled online. Please contact us."
+      not_found: "Appointment not found."
+
+  appointment_mailer:
+    confirmation:
+      subject: "Appointment confirmation"
+      greeting: "Hi %{name},"
+      body: "Your appointment with %{practitioner} on %{date} is confirmed."
+      view_appointment: "View your appointment"
+      view_appointment_plain: "To view your appointment and cancellation options, visit:"
+      signature: "— Bookwell"
+    status_changed:
+      subject: "Appointment status updated to %{status}"
+      greeting: "Hi %{name},"
+      body: "Your appointment with %{practitioner} on %{date} is now %{status}."
+      body_html: "Your appointment with %{practitioner} on %{date} is now <strong>%{status}</strong>."
+      view_appointment: "View your appointment"
+      view_appointment_plain: "To view your appointment and cancellation options, visit:"
+      signature: "— Bookwell"
+    cancellation_confirmation:
+      subject: "Your appointment on %{date} has been cancelled"
+      greeting: "Hi %{name},"
+      body: "Your appointment with %{practitioner} on %{date} has been cancelled."
+      refund:
+        within_48h: "Because your appointment was within 48 hours, your deposit of %{deposit} has been forfeited. You will receive a refund of %{refund}."
+        beyond_48h: "Because you cancelled more than 48 hours in advance, you will receive a full refund of %{refund}."
+        within_48h_html: "Because your appointment was within 48 hours, your deposit of <strong>%{deposit}</strong> has been forfeited. You will receive a refund of <strong>%{refund}</strong>."
+        beyond_48h_html: "Because you cancelled more than 48 hours in advance, you will receive a full refund of <strong>%{refund}</strong>."
+      signature: "— Bookwell"
+    practitioner_cancellation_notification:
+      subject: "Appointment cancelled — %{customer} on %{date}"
+      greeting: "Hi %{name},"
+      body: "%{customer}'s appointment on %{date} has been cancelled."
+      refund:
+        within_48h: "Because the appointment was within 48 hours, the deposit of %{deposit} was forfeited. A refund of %{refund} will be issued."
+        beyond_48h: "Because the cancellation was made more than 48 hours in advance, a full refund of %{refund} will be issued."
+        within_48h_html: "Because the appointment was within 48 hours, the deposit of <strong>%{deposit}</strong> was forfeited. A refund of <strong>%{refund}</strong> will be issued."
+        beyond_48h_html: "Because the cancellation was made more than 48 hours in advance, a full refund of <strong>%{refund}</strong> will be issued."
+      signature: "— Bookwell"

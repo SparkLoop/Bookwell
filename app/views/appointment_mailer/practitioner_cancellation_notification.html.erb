@@ -1,0 +1,15 @@
+<p><%= t(".greeting", name: @practitioner.name) %></p>
+
+<p><%= t(".body", customer: @customer.name, date: @appointment.display_time) %></p>
+
+<% if @appointment.payment %>
+  <% deposit = "$#{"%.2f" % @appointment.deposit_paid}" %>
+  <% refund  = "$#{"%.2f" % @appointment.refund_amount}" %>
+  <% if @appointment.within_48h? %>
+    <p><%= t(".refund.within_48h_html", deposit: deposit, refund: refund) %></p>
+  <% else %>
+    <p><%= t(".refund.beyond_48h_html", refund: refund) %></p>
+  <% end %>
+<% end %>
+
+<p><%= t(".signature") %></p>

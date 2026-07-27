@@ -40,3 +40,9 @@ group :development do
   gem "web-console"
   gem "letter_opener"
 end
+
+group :test do
+  gem "rspec-rails"
+  gem "shoulda-matchers"
+  gem "factory_bot_rails"
+end
